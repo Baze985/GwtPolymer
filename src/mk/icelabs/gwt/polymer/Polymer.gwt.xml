@@ -49,7 +49,7 @@
   <extend-property name="polymer.user.agent" values="chrome" />
   <extend-property name="polymer.user.agent" values="air" />
 
-  <!-- Decide which GXT user.agent setting to apply -->
+  <!-- Decide which user.agent setting to apply -->
   <property-provider name="polymer.user.agent" generator="mk.icelabs.gwt.polymer.client.core.UserAgentPropertyGenerator" />
 
   <!-- Restrict the permutation explosion -->
