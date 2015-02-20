@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 
 /**
- * Abstract base for components that can contain child widgets.
+ * Abstract base for components that can contain child widgets and public crud-able.
  */
 public abstract class ContainerExt<T extends IsWidget> extends Container<T> {
 

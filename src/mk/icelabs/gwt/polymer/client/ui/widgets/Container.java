@@ -28,7 +28,6 @@ import mk.icelabs.gwt.polymer.client.ui.util.ComponentHelper;
 import mk.icelabs.gwt.polymer.client.ui.util.HasMargins;
 import mk.icelabs.gwt.polymer.client.ui.util.Margins;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.shared.HandlerRegistration;

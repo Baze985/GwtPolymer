@@ -17,21 +17,12 @@ import com.google.gwt.user.client.DOM;
  *
  * <p/>
  *
- * Several features in this class can have their behavior customized, such as what next ID to create, what is the
- * highest z-index in the application, and how wide to assume that browser scrollbars will be. You can replace the
- * default implementation of this class with your own type that extends it through a replace-with directive in your
- * module file, something like this:
- * <code><pre>
- * &lt;replace-with class="path.to.my.CustomXDOMImpl">
- *   &lt;when-type-is class="com.sencha.gxt.core.client.dom.XDOM.XDOMImpl" />
- * &lt;/replace-with>
- * </pre></code>
  *
  * @see DOM
  */
 public class PDOM {
 
-  private static final XDOMImpl instance = GWT.create(XDOMImpl.class);
+  private static final PDOMImpl instance = GWT.create(PDOMImpl.class);
 
   /**
    * An empty safe styles instance.
@@ -262,10 +253,9 @@ public class PDOM {
 
 
   /**
-   * Actual implementation of any XDOM methods that require the use of fields to track state. By keeping this state
-   * in an instance like this, behavior can be shared between one or more libraries, such as GXT 2 and 3.
+   * Actual implementation of any PDOM methods.
    */
-  public static class XDOMImpl {
+  public static class PDOMImpl {
     private int zIndexId = 1000;
     private int scrollBarWidth = Style.DEFAULT;
     private int autoId = 0;

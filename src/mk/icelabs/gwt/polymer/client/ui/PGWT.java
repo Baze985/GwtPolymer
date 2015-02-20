@@ -9,7 +9,7 @@ import mk.icelabs.gwt.polymer.client.ui.BindingPropertySet.PropertyName;
  */
 public class PGWT {
   
-  @PropertyName("polymer.user.agent")
+  @PropertyName("p.user.agent")
   interface UserAgent extends BindingPropertySet {
     @PropertyValue("safari3")
     boolean isSafari3();
@@ -51,7 +51,7 @@ public class PGWT {
     boolean isAir();
   }
 
-  @PropertyName("polymer.agent.os")
+  @PropertyName("p.user.agent.os")
   interface OS extends BindingPropertySet {
     @PropertyValue("mac")
     boolean isMac();
