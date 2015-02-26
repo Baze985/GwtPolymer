@@ -261,9 +261,9 @@ public abstract class Container<T extends IsWidget> extends Component implements
     return getWidgetIndex(asWidgetOrNull(child));
   }
 
-//  protected int getWidgetIndex(Widget child) {
-//    return getChildren().indexOf(child);
-//  }
+  protected int getWidgetIndex(Widget child) {
+    return getChildren().indexOf(child);
+  }
 
   @SuppressWarnings("unchecked")
   protected Iterator<T> iterator() {

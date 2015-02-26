@@ -5,12 +5,11 @@ import java.util.List;
 
 import mk.icelabs.gwt.polymer.client.dom.polymer.core.CoreAnimatedPagesElement;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
-public class CoreAnimatedPages extends CoreSelector<CoreSection>  {
+public class CoreAnimatedPages<W extends Widget> extends CoreSelector<W>  {
 
 	public static final String STYLE = "";
 
@@ -36,7 +35,7 @@ public class CoreAnimatedPages extends CoreSelector<CoreSection>  {
 		this(Document.get().createElement(CoreAnimatedPagesElement.TAG), STYLE);
 	}
 
-	public CoreAnimatedPages(Element element, String styleName) {
+	protected CoreAnimatedPages(Element element, String styleName) {
 		super(element);
 		if (styleName != null && !styleName.equalsIgnoreCase(STYLE)) {
 			styleName = STYLE + " " + styleName;
@@ -55,17 +54,17 @@ public class CoreAnimatedPages extends CoreSelector<CoreSection>  {
 		return (CoreAnimatedPagesElement) super.getElement();
 	}
 
-	@Override
-	protected CoreSection checkAdoptInstance(Widget child) {
-		
-		if (!(child instanceof CoreSection)) {
-			CoreSection v = new CoreSection(child);
-			GWT.log("Anim pages, checkAdoptInstance adopting with creation: "
-					+ v.toString());
-			return v;
-		}
-
-		return super.checkAdoptInstance(child);
-	}
+//	@Override
+//	protected CoreSection checkAdoptInstance(Widget child) {
+//		
+//		if (!(child instanceof CoreSection)) {
+//			CoreSection v = new CoreSection(child);
+//			GWT.log("Anim pages, checkAdoptInstance adopting with creation: "
+//					+ v.toString());
+//			return v;
+//		}
+//
+//		return super.checkAdoptInstance(child);
+//	}
 
 }

@@ -19,6 +19,8 @@ public class PaperInputDecorator extends SimpleContainer {
 	protected PaperInputDecorator(TextBoxBase input, Element element, String styleName) {
 		super(true);
 		setElement(element);
+		
+		input.getElement().setAttribute("is", "core-input");
 		setWidget(input);
 		
 		if (styleName != null && !styleName.equalsIgnoreCase(STYLE)) {
@@ -66,11 +68,11 @@ public class PaperInputDecorator extends SimpleContainer {
 	
 	
 	public void setInvalid(boolean status) {
-		getElement().setRemoveAttribute("isInvalide", status);
+		getElement().setRemoveAttribute("isInvalid", status);
 	}
 
 	public boolean isInvalid() {
-		return getElement().hasAttribute("isInvalide");
+		return getElement().hasAttribute("isInvalid");
 	}
 	
 	public void setAutoValidate(boolean status) {

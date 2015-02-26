@@ -1,9 +1,10 @@
 package mk.icelabs.gwt.polymer.client.ui;
 
 
+import mk.icelabs.gwt.polymer.client.ui.BindingPropertySet.PropertyName;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
-import mk.icelabs.gwt.polymer.client.ui.BindingPropertySet.PropertyName;
 /**
  * Core utilities and functions.
  */
@@ -62,6 +63,18 @@ public class PGWT {
     @PropertyValue("windows")
     boolean isWindows();
   }
+  
+  @PropertyName("p.user.agent.device")
+  interface Device extends BindingPropertySet {
+    @PropertyValue("desktop")
+    boolean isDesktop();
+
+    @PropertyValue("tablet")
+    boolean isTablet();
+
+    @PropertyValue("mobile")
+    boolean isMobile();
+  }
 
   private static final boolean isSecure;
   private static boolean useShims;
@@ -79,6 +92,11 @@ public class PGWT {
     return GWT.<UserAgent> create(UserAgent.class);
   }
 
+  private static final Device device() {
+	return GWT.<Device> create(Device.class);
+  }
+
+  
   /**
    * URL to a 1x1 transparent GIF image used by GXT to create inline icons with
    * CSS background images.
@@ -321,6 +339,37 @@ public class PGWT {
   public static boolean isWindows() {
     return platform().isWindows();
   }
+  
+  /**
+   * Returns true if the device is Desktop.
+   * 
+   * @return true if windows
+   */
+  public static boolean isDesktop() {
+    return device().isDesktop();
+  }
+  
+  /**
+ 
+   * Returns true if the device is Tablet.
+   * 
+   * @return true if Tablet
+   */
+  public static boolean isTablet() {
+    return device().isTablet();
+  }
+  
+  /**
+  
+   * Returns true if the device is Mobile.
+   * 
+   * @return true if Mobile
+   */
+  public static boolean isMobile() {
+    return device().isMobile();
+  }
+ 
+  
 
   /**
    * True to force the use of shims.

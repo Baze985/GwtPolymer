@@ -8,6 +8,7 @@ import java.util.Map;
 import mk.icelabs.gwt.polymer.client.ui.Style;
 import mk.icelabs.gwt.polymer.client.ui.Style.Anchor;
 import mk.icelabs.gwt.polymer.client.ui.Style.AnchorAlignment;
+import mk.icelabs.gwt.polymer.client.ui.Style.HideMode;
 import mk.icelabs.gwt.polymer.client.ui.Style.ScrollDirection;
 import mk.icelabs.gwt.polymer.client.ui.Style.Side;
 import mk.icelabs.gwt.polymer.client.ui.util.Margins;
@@ -189,6 +190,7 @@ public class ElementBase extends com.google.gwt.user.client.Element {
   protected ElementBase() {
   }
 
+  
   /**
    * Adds the style names to the element. Duplicate styles are automatically filtered out.
    * 
@@ -1371,7 +1373,14 @@ public class ElementBase extends com.google.gwt.user.client.Element {
    * 
    * @param list the meta data list
    */
-  public final void restoreVisible(List<HashMap<String, Object>> list) {
+  public final void restoreVisible(HideMode mode) {
+	  String[] vals = mode.value().split(";");
+	  for (String val : vals){
+		  String prop = val.split(":")[0];
+		  getStyle().clearProperty(prop);
+	  }
+		  
+	  
 //    if (list != null) {
 //      for (HashMap<String,Object> m : list) {
 //        Element e = (Element) m.get("element");

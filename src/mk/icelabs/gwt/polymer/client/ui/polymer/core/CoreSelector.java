@@ -1,13 +1,14 @@
 package mk.icelabs.gwt.polymer.client.ui.polymer.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import mk.icelabs.gwt.polymer.client.dom.polymer.core.CoreSelectorElement;
 import mk.icelabs.gwt.polymer.client.event.polymer.EventCoreBase;
 import mk.icelabs.gwt.polymer.client.event.polymer.EventHandlerCore;
 import mk.icelabs.gwt.polymer.client.ui.widgets.ContainerExt;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -182,16 +183,47 @@ HasConstrainedValue<T> {
 	}
 
 	@Override
-	public void setAcceptableValues(Collection<T> newValues) {
-		clear();
-
-		for (T nextNewValue : newValues) {
-			add(nextNewValue);
+	public void setAcceptableValues(Collection<T> acvtiveVals) {
+		List<T> silentItems = new ArrayList<>();
+		while(iterator().hasNext()){
+			T w = iterator().next();
+			if (!acvtiveVals.contains(w))
+				silentItems.add(w);
+		}
+			
+		String silentTags = "";
+		for (T silent : silentItems) {
+			silentTags += silent.getElement().getTagName() + " ";
+			
 		}
 
-		updateSelection();
+		if (!silentTags.isEmpty())
+			getElement().setExcludedLocalNames(silentTags);
+		
+		if (getValue() != null 
+				&& !acvtiveVals.contains(getValue()))
+			getElement().setSelected("");
 	}
 
+	public void setSilentValues(Collection<T> silentVals) {
+		
+		String silentTags = "";
+		for (T silent : silentVals) {
+			if (getChildren().contains(silent))
+				silentTags += silent.getElement().getTagName() + " ";
+			
+		}
+
+		if (!silentTags.isEmpty()){
+			//getElement().setExcludedLocalNames(silentTags);
+			getElement().setAttribute("excludedLocalNames", silentTags.toLowerCase());
+			// GWT.log("excluded names: " + silentTags);
+		}
+		if (getValue() != null 
+				&& silentVals.contains(getValue()))
+			getElement().setSelected("");
+	}
+	
 	public CoreSelectorElement getElement() {
 		return super.getElement().cast();
 	}
@@ -206,11 +238,16 @@ HasConstrainedValue<T> {
 			return;
 		}
 		
+		// GWT.log(getClass().getName() + "updateSelection val : " + getValue());
+		
 		getElement().setSelected(getChildren().indexOf(getValue()) + "");
 	}
 	
 	protected void onSelectorChanged() {	
 		String sel = getElement().getSelected();	
+		if (sel == null || sel.length() == 0)
+			return;
+		
 		T before = value;
 		try {
 			Integer index = Integer.valueOf(sel);
@@ -228,6 +265,7 @@ HasConstrainedValue<T> {
 			}
 		}
 		
+		// GWT.log(getClass().getName() + " is equal val: " + value.equals(before));
 		ValueChangeEvent.fireIfNotEqual(this, before, value);
 		
 		
@@ -236,10 +274,16 @@ HasConstrainedValue<T> {
 	  
 	protected void ensureDomSelectorHandlers() {
 		addDomHandler(new EventHandlerCore<CoreSelectorEvent>() {
+			private String lastIndex = "";
 			@Override
 			public void onEvent(CoreSelectorEvent event) {
-				GWT.log("OnSelector: " + getElement().getSelected());
-				onSelectorChanged();
+				String sel = getElement().getSelected();
+				// GWT.log("OnSelector: " + sel);
+				if (!lastIndex.equals(sel)){
+					lastIndex = sel;
+					onSelectorChanged();
+				}
+					
 				
 			}
 

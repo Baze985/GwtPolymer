@@ -120,6 +120,9 @@ public class CoreDrawerPanel extends Container<Widget> {
 		drawer.getElement().setAttribute(PanelType.DRAWER.attr, "");
 		main.getElement().setAttribute(PanelType.MAIN.attr, "");
 		
+		this.drawerWidget = drawer;
+		this.mainWidget = main;
+		
 		add(drawer);
 		add(main);
 	}
@@ -226,6 +229,22 @@ public class CoreDrawerPanel extends Container<Widget> {
 		return mainWidget;
 	}
 	
+	public void replaceMainWidget(Widget newMainWidget, boolean isFit){
+		if (mainWidget != null)
+			remove(mainWidget);
+		
+		mainWidget = newMainWidget;
+		mainWidget.getElement().setAttribute(PanelType.MAIN.attr, "");
+		
+		if (isFit)
+			mainWidget.getElement().setAttribute("fit", "");
+		else
+			mainWidget.getElement().removeAttribute("fit");
+		
+		add(mainWidget);
+		
+	}
+	
 	public void setContentFitWindowSize(boolean status) {
 		if (status)
 			mainWidget.getElement().setAttribute("fit", "");
@@ -241,6 +260,7 @@ public class CoreDrawerPanel extends Container<Widget> {
 
 	@Override
 	protected Widget checkAdoptInstance(Widget w) {
+		assert (getChildren().size() < 3) : ("The related DrawerPanel can have 2 panels as children from which one is DRAWER, and other MAIN");
 		if (getChildren().size() == 0)
 			return w;
 		

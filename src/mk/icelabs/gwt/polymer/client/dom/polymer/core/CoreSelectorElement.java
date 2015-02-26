@@ -101,6 +101,14 @@ public class CoreSelectorElement extends ElementBase {
 		this.activateEvent = evt;
 	}-*/;
 
+	public final native void setExcludedLocalNames(String tagNames) /*-{
+		this.excludedLocalNames = tagNames;
+	}-*/;
+
+	public final native String getExcludedLocalNames() /*-{
+		return this.excludedLocalNames;
+	}-*/;
+
 	public final native boolean isNotap() /*-{
 		return this.notap;
 	}-*/;

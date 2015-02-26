@@ -1,17 +1,17 @@
 package mk.icelabs.gwt.polymer.client.ui.polymer.core;
 
 import mk.icelabs.gwt.polymer.client.dom.polymer.core.CoreIconElement;
+import mk.icelabs.gwt.polymer.client.ui.widgets.Component;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.ui.ButtonBase;
 
-public class CoreIcon extends ButtonBase {
+public class CoreIcon extends Component {
 
 	public static final String STYLE = "";
 
 	protected CoreIcon(Element elem){
-		super(elem);
+		setElement(elem);
 	}
 
 	public CoreIcon() {

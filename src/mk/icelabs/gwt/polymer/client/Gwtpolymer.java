@@ -13,12 +13,12 @@ import mk.icelabs.gwt.polymer.client.ui.polymer.core.CoreHeaderPanel.HeaderMode;
 import mk.icelabs.gwt.polymer.client.ui.polymer.core.CoreIcon;
 import mk.icelabs.gwt.polymer.client.ui.polymer.core.CoreItem;
 import mk.icelabs.gwt.polymer.client.ui.polymer.core.CoreMenu;
+import mk.icelabs.gwt.polymer.client.ui.polymer.core.CoreOverlay;
 import mk.icelabs.gwt.polymer.client.ui.polymer.core.CoreScaffold;
 import mk.icelabs.gwt.polymer.client.ui.polymer.core.CoreSection;
 import mk.icelabs.gwt.polymer.client.ui.polymer.core.CoreSubMenu;
 import mk.icelabs.gwt.polymer.client.ui.polymer.core.CoreToolbar;
 import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperButton;
-import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperDialogActions;
 import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperDropdown;
 import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperDropdownMenu;
 import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperIconButton;
@@ -26,14 +26,15 @@ import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperInput;
 import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperInputDecorator;
 import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperItem;
 import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperMenuButton;
+import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperProgress;
 import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperSpiner;
 import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperTab;
 import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperTabs;
+import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperToast;
 import mk.icelabs.gwt.polymer.client.ui.polymer.paper.PaperToggleButton;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -103,21 +104,25 @@ public class Gwtpolymer implements EntryPoint {
 		anPages.add(new CoreSection(createDummyWidget("blue")));
 		anPages.add(new CoreSection(createDummyWidget("green")));
 		anPages.add(new CoreSection(createDummyWidget("red")));
+		anPages.setSelectedIndex(0);
 		
 		final PaperTabs paperTabs = new PaperTabs();
+		paperTabs.add("Tab1");
+		paperTabs.add("Tab2");
+		paperTabs.add("Tab3");
+	//	add20Tabs(paperTabs);
+		paperTabs.setSelectedIndex(0);
+		
 		paperTabs.addValueChangeHandler(new ValueChangeHandler<PaperTab>() {
 
 			@Override
 			public void onValueChange(ValueChangeEvent<PaperTab> event) {
-				GWT.log(event.getValue().getLabel());
-			//	anPages.setSelectedIndex(paperTabs.getSelectedIndex());
+				GWT.log("selected tab index: " + paperTabs.getSelectedIndex());
+				anPages.setSelectedIndex(paperTabs.getSelectedIndex());		
+				
 			}
 		});
-//		paperTabs.add("Tab1");
-//		paperTabs.add("Tab2");
-//		paperTabs.add("Tab3");
-		add20Tabs(paperTabs);
-		paperTabs.setSelectedIndex(0);
+		
 //		paperTabs.setScrollable(true);
 		PaperIconButton icon = new PaperIconButton();
 		icon.setIcon("menu");
@@ -129,13 +134,42 @@ public class Gwtpolymer implements EntryPoint {
 			}
 		});
 		CoreToolbar toolBar = new CoreToolbar();
-		toolBar.getElement().getStyle().setHeight(56, Unit.PX);
+		//toolBar.getElement().getStyle().setHeight(56, Unit.PX);
 		toolBar.add(icon);
+		paperTabs.addStyleName("bottom");
+		paperTabs.addStyleName("fit");
 		toolBar.add(paperTabs);
 		
+		CoreHeaderPanel h = new CoreHeaderPanel(toolBar, anPages);
+		h.setContentFitWindowSize(true);
+		
+		CoreDrawerPanel scaff = new CoreDrawerPanel(new CoreHeaderPanel(createDummyWidget("blue"), createDummyWidget("green")), h);
+		scaff.setContentFitWindowSize(true);
+//		RootPanel.get().add(scaff);
+//		RootPanel.get().add(toolBar);
+//		RootPanel.get().add(anPages);
 		
 		
+		final PaperToast toastInfo = new PaperToast();
+		toastInfo.setText("eve smeee :) ");
+		RootPanel.get().add(toastInfo);
 		
+		PaperIconButton iconbutton2 = new PaperIconButton();
+		iconbutton2.setIcon("menu");
+		iconbutton2.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				GWT.log("Icon manu button2 clicked");
+				toastInfo.open();
+			}
+		});
+		
+		RootPanel.get().add(iconbutton2);
+		
+		
+		if (true)
+			return;
 //		v.add(pInput);
 //		v.add(pButton);
 //		v.add(toggle);
@@ -150,35 +184,50 @@ public class Gwtpolymer implements EntryPoint {
 		
 		CoreItem i = new CoreItem();
 		i.setLabel("Item 0");
+		i.getElement().setAttribute("sel", "0");
 		m.add(i);
 		
 		i = new CoreItem();
 		i.setLabel("Item 1");
+		i.getElement().setAttribute("sel", "1");
 		m.add(i);
 		
 		i = new CoreItem();
 		i.setLabel("Item 2");
+		i.getElement().setAttribute("sel", "2");
 		m.add(i);
 		
 		CoreSubMenu ms = new CoreSubMenu();
 		ms.setLabel("sub menu 1");
+		ms.getElement().setAttribute("sel", "-1");
 		
 		i = new CoreItem();
 		i.setLabel("Item 3");
+		i.getElement().setAttribute("sel", "3");
 		ms.add(i);
 		
-		i = new CoreItem();
+		i = new PaperItem();
+		i.addDomHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				GWT.log("item clicked");
+			}
+		}, ClickEvent.getType());
 		i.setLabel("Item 4");
+		i.getElement().setAttribute("sel", "4");
 		ms.add(i);
 		
 		m.add(ms);
-		
+		//m.setValueAttribute("sel");
+		//m.setSilentValues((List)Arrays.asList(ms));
 		
 		m.addValueChangeHandler(new ValueChangeHandler<CoreItem>() {
 
 			@Override
 			public void onValueChange(ValueChangeEvent<CoreItem> event) {
 				GWT.log(event.getValue().toString());
+				
 			}
 		});
 		
@@ -220,11 +269,11 @@ public class Gwtpolymer implements EntryPoint {
 
 	//	RootPanel.get().add(appS);
 		
-		PaperInputDecorator inputD = new PaperInputDecorator(new PasswordTextBox());
+		final PaperInputDecorator inputD = new PaperInputDecorator(new PasswordTextBox());
 		inputD.setLabel("Password");
 		inputD.setFloatingLabel(true);
 		
-		final PaperDialogActions pDialog = new PaperDialogActions();
+		final CoreOverlay pDialog = new CoreOverlay();
 		//pDialog.setPixelSize(300, 300);
 		pDialog.setLayered(false);
 		pDialog.setAutoCloseDisabled(true);
@@ -242,24 +291,30 @@ public class Gwtpolymer implements EntryPoint {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				pDialog.close();
+			//	pDialog.closePlusRemove();
+				inputD.setError("Cannot be empty");
+				inputD.setInvalid(true);
 			}
 		});
 		okButton.setLabel("Ok");
-		pDialog.addButtonAffirmative(okButton);
+		pDialog.add(okButton);
 		pDialog.setCloseSelector("");
 		
 		PaperButton b = new PaperButton();
 		b.setLabel("Dialog");
+		final PaperProgress progress = new PaperProgress();
+		progress.setVisible(false);
 		b.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				pDialog.open();		
+				//pDialog.open();
+				progress.setVisible(true);
+				progress.setIndeterminate(true);
 			}
 		});
 	    RootPanel.get().add(b);
-	    RootPanel.get().add(pDialog);
+	    RootPanel.get().add(progress);
 		
 		CoreDropdown<CoreItem> cDropDown = new CoreDropdown<>();
 		CoreItem cItem = new CoreItem();
@@ -327,6 +382,9 @@ public class Gwtpolymer implements EntryPoint {
 				GWT.log(event.getValue().getLabel());
 			}
 		});
+		
+		
+		
 	}
 
 	private Widget createDummyWidget(String bgColor){

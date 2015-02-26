@@ -37,7 +37,6 @@ import mk.icelabs.gwt.polymer.client.event.ShowEvent.ShowHandler;
 import mk.icelabs.gwt.polymer.client.ui.HasItemId;
 import mk.icelabs.gwt.polymer.client.ui.PGWT;
 import mk.icelabs.gwt.polymer.client.ui.Style;
-import mk.icelabs.gwt.polymer.client.ui.Style.HideMode;
 import mk.icelabs.gwt.polymer.client.ui.util.DelayedTask;
 import mk.icelabs.gwt.polymer.client.ui.util.Point;
 import mk.icelabs.gwt.polymer.client.ui.util.Rectangle;
@@ -126,7 +125,7 @@ public class Component extends Widget implements HasFocusHandlers, HasBlurHandle
   private boolean deferHeight;
   private boolean disableEvents;
   private FocusManagerSupport focusManagerSupport;
-  private HideMode hideMode = HideMode.DISPLAY;
+  //private HideMode hideMode = HideMode.DISPLAY;
   private String itemId;
   private Map<String, String> overElements;
 
@@ -251,6 +250,9 @@ public class Component extends Widget implements HasFocusHandlers, HasBlurHandle
    */
   public void focus() {
     FocusImpl.getFocusImplForWidget().focus(getFocusEl());
+    String elTag = getElement().getTagName();
+    if (elTag.contains("core") || elTag.contains("paper"))
+    	getElement().setAttribute("focus", "");
   }
 
   /**
@@ -289,14 +291,14 @@ public class Component extends Widget implements HasFocusHandlers, HasBlurHandle
     return focusManagerSupport;
   }
 
-  /**
-   * Returns the widget's hide mode.
-   * 
-   * @return the hide mode
-   */
-  public HideMode getHideMode() {
-    return hideMode;
-  }
+//  /**
+//   * Returns the widget's hide mode.
+//   * 
+//   * @return the hide mode
+//   */
+//  public HideMode getHideMode() {
+//    return hideMode;
+//  }
 
   /**
    * Returns the widget's id.
@@ -584,14 +586,14 @@ public class Component extends Widget implements HasFocusHandlers, HasBlurHandle
     setSize(Style.UNDEFINED, height);
   }
 
-  /**
-   * Sets the components hide mode (defaults to HideMode.DISPLAY).
-   * 
-   * @param hideMode the hide mode.
-   */
-  public void setHideMode(HideMode hideMode) {
-    this.hideMode = hideMode;
-  }
+//  /**
+//   * Sets the components hide mode (defaults to HideMode.DISPLAY).
+//   * 
+//   * @param hideMode the hide mode.
+//   */
+//  public void setHideMode(HideMode hideMode) {
+//    this.hideMode = hideMode;
+//  }
 
   /**
    * Sets the component's id.
@@ -990,6 +992,9 @@ public class Component extends Widget implements HasFocusHandlers, HasBlurHandle
    */
   protected void blur() {
     FocusImpl.getFocusImplForWidget().blur(getFocusEl());
+    String elTag = getElement().getTagName();
+    if (elTag.contains("core") || elTag.contains("paper"))
+    	getElement().removeAttribute("focus");
   }
 
 
@@ -1092,8 +1097,8 @@ public class Component extends Widget implements HasFocusHandlers, HasBlurHandle
   }
 
   protected void onHide() {
-    addStyleName(hideMode.value());
-  
+	// getElement().applyStyles(hideMode.value());
+	  super.setVisible(false);
   }
 
   protected void onHideContextMenu(HideEvent event) {
@@ -1167,7 +1172,8 @@ public class Component extends Widget implements HasFocusHandlers, HasBlurHandle
   }
 
   protected void onShow() {
-    removeStyleName(hideMode.value());
+    //getElement().restoreVisible(hideMode);
+	  super.setVisible(true);
     sync(true);
     Scheduler.get().scheduleFinally(new ScheduledCommand() {
       @Override
@@ -1245,7 +1251,8 @@ public class Component extends Widget implements HasFocusHandlers, HasBlurHandle
 
   private void restoreVisible(List<HashMap<String, Object>> list) {
     if (ensureVisibilityOnSizing && list != null) {
-      getElement().restoreVisible(list);
+     // getElement().restoreVisible(hideMode);
+    	super.setVisible(true);
     }
   }
 

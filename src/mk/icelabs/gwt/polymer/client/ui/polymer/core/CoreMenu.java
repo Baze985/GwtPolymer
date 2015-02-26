@@ -32,12 +32,9 @@ public class CoreMenu extends CoreSelector<CoreItem> {
 	
 	@Override
 	protected CoreItem checkAdoptInstance(Widget w) {
-		w = super.checkAdoptInstance(w);
-		if (w instanceof CoreItem)
-			return (CoreItem) w;
+		assert(w instanceof CoreItem);
+		return (CoreItem) w;
 		
-		throw new IllegalArgumentException("The chiled widget must be of type CoreItem");
-
 	}
 
 }

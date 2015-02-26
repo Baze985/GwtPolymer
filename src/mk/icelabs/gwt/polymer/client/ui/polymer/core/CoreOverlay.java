@@ -57,6 +57,7 @@ public class CoreOverlay extends Container<Widget> {
 	}
 
 	private boolean constrainToCenter;
+	private HandlerRegistration removeHandler;
 
 	
 	public CoreOverlay() {
@@ -87,6 +88,22 @@ public class CoreOverlay extends Container<Widget> {
 	
 	public void close(){
 		getElement().close();
+	}
+
+	
+	public void closePlusRemove(){
+		removeHandler = addCoreOverlayClosedHandler(new EventHandlerCore<CoreOverlay.CoreOverlayClosedEvent>() {
+
+			@Override
+			public void onEvent(CoreOverlayClosedEvent e) {
+				removeFromParent();
+				removeHandler.removeHandler();
+				removeHandler = null;
+				
+			}
+		});
+		
+		close();
 	}
 	
 	public void open(){
